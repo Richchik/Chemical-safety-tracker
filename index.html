@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AI-Powered Chemical Safety Dashboard</title>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Firebase SDK v8 -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      padding: 20px;
+    }
+    h1 {
+      color: #0b5394;
+    }
+    .incident {
+      background: #fff;
+      padding: 10px;
+      margin: 10px 0;
+      border-left: 6px solid #999;
+    }
+    .severity-high { border-color: red; }
+    .severity-medium { border-color: orange; }
+    .severity-low { border-color: green; }
+
+    #chatLog {
+      background: #fff;
+      padding: 10px;
+      height: 220px;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+    }
+    .ai { color: #0b5394; }
+    .user { color: #333; font-weight: bold; }
+  </style>
+</head>
+
+<body>
+
+<h1>🧪 AI-Powered Chemical Safety Dashboard</h1>
+
+<!-- INCIDENT LIST -->
+<h2>📋 Incident List</h2>
+<div id="incidentList">Loading incidents...</div>
+
+<!-- PIE CHART -->
+<h2>📊 Incident Severity Distribution</h2>
+<canvas id="severityChart" width="400" height="200"></canvas>
+
+<!-- CHATBOT -->
+<h2>🤖 Safety AI Assistant</h2>
+<div id="chatLog">
+  <p class="ai"><b>AI:</b> Hello! Ask me about incidents, causes, or prevention.</p>
+</div>
+<input id="userInput" type="text" placeholder="Ask about incidents or prevention..." style="width:80%">
+<button onclick="askBot()">Ask</button>
+
+<script>
+/* ---------------- FIREBASE CONFIG ---------------- */
+var firebaseConfig = {
+  apiKey: "AIzaSyBa2GS78t--abBdNiK9FALDhozMl7WU-LI",
+  authDomain: "chemical-safety-tracker.firebaseapp.com",
+  databaseURL: "https://chemical-safety-tracker-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "chemical-safety-tracker"
+};
+firebase.initializeApp(firebaseConfig);
+
+var db = firebase.database();
+var incidentRef = db.ref("incidents");
+
+let incidentData = [];
+
+/* ---------------- LOAD INCIDENTS ---------------- */
+incidentRef.once("value").then(snapshot => {
+  const data = snapshot.val();
+  const list = document.getElementById("incidentList");
+
+  if (!data) {
+    list.innerHTML = "No incidents found";
+    return;
+  }
+
+  incidentData = Object.keys(data)
+    .map(key => ({ id: key, ...data[key] }))
+    .sort((a, b) => a.id.localeCompare(b.id));
+
+  let html = "";
+  let high = 0, medium = 0, low = 0;
+
+  incidentData.forEach(inc => {
+    const id = inc.incidentID || inc.id || "Not specified";
+    const type = inc.type || "Not specified";
+    const location = inc.location || "Not specified";
+    const severity = (inc.severity || "Low").toLowerCase();
+    const videoSearch = inc.videoSearch || "";
+
+const youtubeLink = videoSearch
+  ? `https://www.youtube.com/results?search_query=${encodeURIComponent(videoSearch)}`
+  : "";
+
+
+
+    if (severity === "high") high++;
+    else if (severity === "medium") medium++;
+    else low++;
+
+  html += `
+  <div class="incident severity-${severity}">
+    <b>${id}</b><br>
+    ${type} | ${location} | ${severity.toUpperCase()}<br>
+
+    ${youtubeLink ? `
+  <a href="${youtubeLink}" target="_blank">
+    ▶ Watch Safety Videos
+  </a>
+` : ""}
+
+  </div>
+`;
+
+  });
+
+  list.innerHTML = html;
+  drawChart(high, medium, low);
+});
+
+/* ---------------- PIE CHART ---------------- */
+function drawChart(high, medium, low) {
+  new Chart(document.getElementById("severityChart"), {
+    type: "pie",
+    data: {
+      labels: ["High", "Medium", "Low"],
+      datasets: [{
+        data: [high, medium, low],
+        backgroundColor: ["red", "orange", "green"]
+      }]
+    }
+  });
+}
+
+/* ---------------- RULE-BASED CHATBOT ---------------- */
+function askBot() {
+  const input = document.getElementById("userInput");
+  const chat = document.getElementById("chatLog");
+  const question = input.value.trim().toLowerCase();
+  if (!question) return;
+
+  chat.innerHTML += `<p class="user">You: ${input.value}</p>`;
+  input.value = "";
+
+  let answer = "Please ask about incidents, causes, or safety prevention.";
+
+  if (question.includes("list") || question.includes("all incidents")) {
+    answer = "Here are all incidents currently recorded:";
+    incidentData.forEach(i => {
+      answer += `<br>${i.incidentID || i.id} – ${i.type || "N/A"} (${i.severity || "Low"})`;
+    });
+  }
+  else if (question.includes("high")) {
+    answer = "There are 3 High risk incidents recorded till now.High risk incidents require immediate action: isolate area, stop operations, use PPE, and inform safety officers.";
+  }
+  else if (question.includes("spill")) {
+    answer = "Chemical spills should be contained immediately, neutralized if safe, and reported.";
+  }
+  else if (question.includes("gas")) {
+    answer = "Gas leaks require evacuation, ventilation, and emergency response teams.";
+  }
+  else if(question.includes("what is a chemical spill")){
+    answer="A chemical spill is the uncontrolled release of hazardous substances (solids, liquids, or gases) into the environment, posing serious risks to health, wildlife, and ecosystems, often from accidents during transport, storage, or handling, requiring immediate emergency response for containment and cleanup.";
+  }
+  else if(question.includes("what is process deviation")){
+    answer="A deviation is a non-compliance, a measured difference between an observed value and an expected value, or a change from documented standards examples are-Equipment exceeding temperature limits during processing or storage. Preventive measures for process deviation focus on proactive controls like robust training, clear SOPs, continuous monitoring, and strong change management, alongside reactive steps like thorough Root Cause Analysis (RCA) using tools like Fishbone/5 Whys, implementing Corrective and Preventive Actions (CAPA), and fostering a blame-free culture to stop recurrence, ultimately ensuring process stability and quality.";
+  }
+  else if(question.includes(" what is near miss")){
+    answer="In a chemical lab, a near miss is any unplanned event with the potential for injury, damage, or harm but narrowly avoided, like a chemical spill caught before affecting someone, equipment failing just before a problem, or realizing you forgot PPE after exposure but suffered no harm.Proactive prevention: Identifies risks before they cause real harm.";
+  }
+  else if(question.includes("what is equipment failure")){
+    answer="Equipment failure in a chemical lab means an instrument stops working as intended, ranging from minor underperformance (like a scale being inaccurate) to total breakdown, often caused by age, lack of cleaning/maintenance, operator error (misuse, bad training), material corrosion, or design flaws, leading to lost data, safety hazards, costly downtime, and interrupted research. Proactive Maintenance: Regular cleaning, calibration, and parts replacement.";
+  }
+  else if (question.includes("prevent") || question.includes("avoid")) {
+  answer = "Incidents can be prevented by following SOPs, regular inspections, proper PPE usage, training, and immediate hazard reporting.";
+  }
+  else if (question.includes("emergency") || question.includes("immediate")) {
+  answer = "Emergency response includes isolating the area, stopping operations, using PPE, evacuating if needed, and informing safety officers.";
+  }
+  else if (question.includes("pie") || question.includes("chart")) {
+  answer = "The pie chart shows the distribution of incidents by severity (High, Medium, Low) to help identify risk concentration areas.";
+  }
+  else if (question.includes("What are SOP") || question.includes("SOP")){
+    answer="An SOP (Standard Operating Procedure) in preventive measures is a detailed, step-by-step guide for performing routine tasks (like maintenance or safety checks) to prevent issues";
+  }
+  else if (question.includes("system") || question.includes("dashboard")) {
+  answer = "This dashboard monitors chemical safety incidents, analyzes risk levels, and supports decision-making for accident prevention.";
+  }
+  else if(question.includes("pilot plant")){
+    answer="A pilot plant is a small, intermediate-scale industrial setup that acts as a bridge between lab research and full-scale manufacturing, used to test, optimize, and validate new processes or products before major investment, gathering crucial data for designing the final, large plant while ensuring safety, quality, and efficiency.";
+  }
+else if (question.includes("why")) {
+  answer = "The system uses rule-based intelligence to ensure reliability, transparency, and cost efficiency, which is critical for safety systems.";
+  }
+else if(question.includes("hi")|| question.includes("hello")){
+  answer=" Hello, I am a AI chatbot helping out students and faculty personels how to prevent and maintain the list of incidents which occured in chemical laboratory.I can help with incident details, risk levels, prevention methods, locations, and safety analysis. Please ask a related question.";
+  }
+  else if (question.includes("causes of process deviation")){
+    answer="Process deviations stem from human errors, equipment failures, material quality issues, and environmental factors, often linked to inadequate training, poor communication, or unclear SOPs, causing unexpected departures from standard procedures impacting quality, safety, or data integrity in fields like pharma. Causes range from simple mistakes (misreading instructions) to system breakdowns (power outages, sensor malfunctions) or raw material inconsistencies.";
+  }
+  else if (question.includes("causes of equipment failure")){
+    answer="Equipment failure stems from common issues like wear & tear, operator error, and insufficient preventive maintenance, but also includes environmental stress, design flaws, improper installation, contamination, and electrical problems, all accelerated by aging equipment, poor quality parts, or a weak reliability culture. Addressing these causes involves proper training, regular monitoring, and a balance of maintenance, rather than too much or too little.";
+  }
+  else if (question.includes("causes of electrical hazard")){
+    answer="Electrical hazards stem from faulty wiring/equipment, overloaded circuits, water exposure, damaged insulation, and improper grounding, often worsened by human factors like lack of training, DIY repairs, or bypassing safety measures, leading to shocks, burns, or fires. Key causes include damaged cords, wet conditions, improper grounding, overloaded outlets, and working live without training, all increasing risk significantly.";
+  }
+  else if (question.includes("causes")){
+    answer="Chemical hazards in labs stem from improper handling, poor storage, lack of training, inadequate engineering controls (like ventilation), incorrect PPE use, and the inherent properties of chemicals (flammability, corrosivity, toxicity), leading to exposures via inhalation, skin absorption, ingestion, or injection, causing burns, fires, poisoning, and long-term illnesses like cancer or organ damage.";
+  }
+  else if (question.includes("incidents")){
+    answer="there are total 10 incidents recorded till now";
+  }
+
+  else if (question.includes("prevent")) {
+    answer = "Prevention includes SOPs, training, PPE, regular inspections, and hazard reporting.";
+  }
+  else if (question.includes("how many") && question.includes("incident")) {
+  answer = `There are ${incidentData.length} incidents recorded in the system.`;
+  }
+  else if (question.includes("near miss")){
+    answer="In a chemical lab, a near miss incident (or close call) is any unplanned event that almost caused harm, injury, property damage, or environmental release but didn't, due to luck or quick action; it's a crucial safety warning for underlying hazards like faulty equipment, procedural errors, or improper handling, allowing labs to fix issues before a real accident happens, like a technician nearly dropping a chemical but catching it.";
+
+  }
+else if (question.includes("how many high")) {
+  const count = incidentData.filter(i => i.severity === "High").length;
+  answer = `There are ${count} high-risk incidents.`;
+}
+else if (question.includes("mechanical section")){
+  answer= "mechanical section typically refers to the Mechanical Operations Laboratory or an area dedicated to mechanical testing of materials, which involve physical changes and processes fundamental to chemical and materials engineering.";
+}
+else if (question.includes("medium")) {
+  const count = incidentData.filter(i => i.severity === "Medium").length;
+  answer = `There are ${count} medium-risk incidents.`;
+}
+
+else if (question.includes("low")) {
+  const count = incidentData.filter(i => i.severity === "Low").length;
+  answer = `There are ${count} low-risk incidents.`;
+}
+
+
+
+  else if (question.includes("inc")) {
+    const found = incidentData.find(i => question.includes((i.incidentID || i.id).toLowerCase()));
+    if (found) {
+      answer = `${found.incidentID || found.id}: ${found.type || "N/A"} at ${found.location || "N/A"} with ${found.severity || "Low"} severity.`;
+    }
+  }
+
+  chat.innerHTML += `<p class="ai"><b>AI:</b> ${answer}</p>`;
+  chat.scrollTop = chat.scrollHeight;
+}
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

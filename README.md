@@ -18,5 +18,6 @@ A web-based dashboard to track chemical safety incidents in real time.
 https://chemical-safety-tracker.web.app/
 
 ## Demo Video
-[Add your YouTube demo link here]
+https://youtu.be/CI2wbV16LtE?si=TeIjUN_k4HGUMmzZ<img width="1242" height="97" alt="image" src="https://github.com/user-attachments/assets/fcf53a44-15e4-42f7-a55a-dbe6559fe01b" />
+
 

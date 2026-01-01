@@ -13,6 +13,7 @@ A web-based dashboard to track chemical safety incidents in real time.
 - Firebase Realtime Database
 - Firebase Hosting
 - Google Forms & Google Sheets
+- Google AppScript
 
 ## Live Demo
 https://chemical-safety-tracker.web.app/

@@ -11,16 +11,20 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
   <style>
-    body {
+  body {
       font-family: Arial, sans-serif;
       background: #f4f6f8;
       padding: 20px;
     }
+
+
+
     h1 {
       color: #0b5394;
     }
     .incident {
       background: #fff;
+      color: #666;
       padding: 10px;
       margin: 10px 0;
       border-left: 6px solid #999;
@@ -29,7 +33,7 @@
     .severity-medium { border-color: orange; }
     .severity-low { border-color: green; }
 
-    #chatLog {
+      #chatLog {
       background: #fff;
       padding: 10px;
       height: 220px;
@@ -37,6 +41,100 @@
       border: 1px solid #ccc;
       margin-bottom: 10px;
     }
+       button {
+       cursor: pointer;
+       padding: 6px 10px;
+       margin-left: 5px;
+       border-radius: 6px;
+       }
+       
+.external-search {
+  margin-top: 20px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fafafa;
+  color: #666;
+}
+
+.external-search input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+}
+
+.search-buttons button {
+  margin-right: 8px;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.hint {
+  font-size: 12px;
+  color: #555;
+}
+
+
+     /* ===================== */
+/* 🌙 DARK MODE STYLES */
+/* ===================== */
+
+body.dark {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+/* Chat container */
+body.dark #chatLog {
+  background-color: #1e1e1e;
+  border-color: #333;
+}
+
+/* AI messages */
+body.dark .ai {
+  color: #9fd3ff;
+}
+
+/* User messages */
+body.dark .user {
+  color: #ffffff;
+}
+
+/* Important warning box */
+body.dark .important-box {
+  background-color: #2a2a2a;
+  border-left: 5px solid #ff9800;
+  color: #f1f1f1;
+}
+
+/* Input fields */
+body.dark input,
+body.dark select,
+body.dark textarea {
+  background-color: #1c1c1c;
+  color: #ffffff;
+  border: 1px solid #444;
+}
+
+/* Buttons */
+body.dark button {
+  background-color: #2d2d2d;
+  color: #ffffff;
+  border: 1px solid #555;
+}
+
+body.dark button:hover {
+  background-color: #3a3a3a;
+}
+
+/* Links */
+body.dark a {
+  color: #4ea3ff;
+}
+
+
+
+
     .ai { color: #0b5394; }
     .user { color: #333; font-weight: bold; }
   </style>
@@ -45,6 +143,68 @@
 <body>
 
 <h1>🧪 AI-Powered Chemical Safety Dashboard</h1>
+<!-- END-TO-END WORKFLOW -->
+<div style="margin:20px 0; padding:15px; background:#f9fafb;color: #666; border-left:6px solid #0b5394;">
+  <h2>🔄 End-to-End Safety Workflow</h2>
+
+  <p style="margin:8px 0;">
+    <b>📝 Report:</b> Incidents are reported using Google Forms with evidence and details.
+  </p>
+
+  <p style="margin:8px 0;">
+    <b>🤖 Analyze:</b> The AI Assistant evaluates incident type, severity, and risk instantly.
+  </p>
+
+  <p style="margin:8px 0;">
+    <b>📊 Monitor:</b> All incidents are stored and visualized live using Firebase & Google Sheets.
+  </p>
+
+  <p style="margin:8px 0;">
+    <b>🛡 Prevent:</b> Actionable safety steps and preventive measures help reduce future risks.
+  </p>
+</div>
+<!-- AI EXPLANATION BOX -->
+<div style="margin:20px 0; padding:15px; background:#eef5ff;color: #666; border-left:6px solid #1c4587;">
+  <h2>🧠 How Our AI Makes Decisions</h2>
+
+  <p>
+    The AI-powered Safety Assistant analyzes reported incidents by combining
+    <b>incident type</b>, <b>severity level</b>, and <b>historical safety data</b>.
+  </p>
+
+  <ul>
+    <li><b>Chemical Spill:</b> Checks exposure risk and containment urgency</li>
+    <li><b>Gas Leakage:</b> Prioritizes evacuation and emergency response</li>
+    <li><b>Fire Hazard:</b> Assesses critical risk and immediate firefighting actions</li>
+    <li><b>Electrical Fault:</b> Suggests isolation and preventive maintenance</li>
+  </ul>
+
+  <p>
+    Based on this analysis, the system generates:
+    <b>Risk Level</b>, <b>Immediate Action</b>, and <b>Preventive Measures</b>
+    to support fast and informed decision-making.
+  </p>
+</div>
+
+<div style="margin: 20px 0; padding: 12px; background: #eef3f8;color: #666; border-left: 5px solid #0b5394;">
+  📝 <b>Incident Reporting:</b><br>
+  Report new laboratory incidents instantly using Google Forms.<br>
+  <a href="https://forms.gle/FzRfAUoNNkSxNQvS6" target="_blank"
+     style="color:#0b5394; font-weight:bold;">
+    👉 Report an Incident (Google Form)
+  </a>
+
+  <hr style="margin:10px 0;">
+
+  📊 <b>Live Incident Monitoring:</b><br>
+  View and analyze all reported incidents in real time using Google Sheets.<br>
+  <a href="https://docs.google.com/spreadsheets/d/1y9sv1xq-t22H1dFKfI3vHVOKqqE-qN1Qw1WLb5_FxiE/edit?usp=sharing" target="_blank"
+     style="color:#0b5394; font-weight:bold;">
+    👉 Open Incident Monitoring Sheet
+  </a>
+</div>
+
+
 
 <!-- INCIDENT LIST -->
 <h2>📋 Incident List</h2>
@@ -53,14 +213,99 @@
 <!-- PIE CHART -->
 <h2>📊 Incident Severity Distribution</h2>
 <canvas id="severityChart" width="400" height="200"></canvas>
+<!-- LIVE INSIGHTS -->
+<div id="liveInsights" style="margin:15px 0; padding:15px; background:#f9f9f9;color: #666; border-left:6px solid #ff9900;">
+  <h3>📊 Live Safety Insights</h3>
+  <ul id="insightsList">
+    <li>Analyzing incident trends...</li>
+  </ul>
+</div>
+
 
 <!-- CHATBOT -->
-<h2>🤖 Safety AI Assistant</h2>
+<div style="display:flex; justify-content:space-between; align-items:center;">
+  <h2>🤖 Safety AI Assistant</h2>
+
+  <div>
+    <button id="voiceToggle" onclick="toggleVoice()">🔊 Voice ON</button>
+    <button onclick="toggleDarkMode()" id="darkModeBtn">🌙 Dark Mode</button>
+    <button onclick="clearChat()" style="background:#ffdddd;color: #666;">🗑 Clear</button>
+  </div>
+</div>
+
 <div id="chatLog">
   <p class="ai"><b>AI:</b> Hello! Ask me about incidents, causes, or prevention.</p>
 </div>
+<div style="
+  background:#fff3cd;
+  color: #666;
+  border-left:5px solid #ff9800;
+  padding:10px;
+  margin-bottom:10px;
+  font-size:14px;
+">
+  ⚠️ <b>Important:</b><br>
+  This AI assistant uses <b>keyword-based intelligence</b>.  
+  Please ask <b>short, clear questions</b> using safety-related keywords  
+  (e.g., <i>INC001,Incident types,chemical spill, gas leakage, explosion risk</i>) for accurate responses.
+</div>
+
+
+
+
 <input id="userInput" type="text" placeholder="Ask about incidents or prevention..." style="width:80%">
 <button onclick="askBot()">Ask</button>
+<button onclick="startVoiceInput()">🎙 Speak</button>
+
+<h3>Upload Incident Evidence</h3>
+
+<input type="file" id="mediaUpload" accept="image/*,video/*" />
+<br><br>
+
+<select id="incidentType">
+  <option value="">Select Incident Type</option>
+  <option value="chemical_spill">Chemical Spill</option>
+  <option value="gas_leakage">Gas Leakage</option>
+  <option value="fire_hazard">Fire Hazard</option>
+  <option value="electrical_fault">Electrical Fault</option>
+  <option value="toxic_exposure">Toxic Exposure</option>
+  <option value="equipment_failure">Equipment Failure</option>
+  <option value="reaction_runaway">Chemical Reaction Runaway</option>
+  <option value="corrosive_leak">Corrosive Material Leak</option>
+  <option value="explosion_risk">Explosion Risk</option>
+  <option value="storage_issue">Improper Chemical Storage</option>
+  <option value="pressure_failure">Pressure Vessel Failure</option>
+  <option value="ventilation_failure">Ventilation Failure</option>
+  <option value="slip_hazard">Slippery Surface / Chemical Slip</option>
+  <option value="ppe_violation">PPE Violation</option>
+  <option value="overheating">Overheating Equipment</option>
+  <option value="waste_disposal">Improper Waste Disposal</option>
+  <option value="radiation">Radiation Exposure</option>
+  <option value="alarm_failure">Emergency Alarm Failure</option>
+</select>
+
+
+<br><br>
+<button onclick="analyzeIncident()">Analyze Incident</button>
+
+<div id="aiResponse"></div>
+<div class="external-search">
+  <h3>🔍 Ask External AI / Search</h3>
+
+  <input type="text" id="externalQuery"
+         placeholder="Search outside the chatbot..." />
+
+  <div class="search-buttons">
+    <button onclick="searchGoogle()">Google</button>
+    <button onclick="openGemini()">Gemini AI</button>
+    <button onclick="searchYouTube()">YouTube</button>
+  </div>
+
+  <p class="hint">
+    Use this when questions are outside the chatbot’s knowledge.
+  </p>
+</div>
+
 
 <script>
 /* ---------------- FIREBASE CONFIG ---------------- */
@@ -131,8 +376,12 @@ const youtubeLink = videoSearch
   drawChart(high, medium, low);
 });
 
+
+
 /* ---------------- PIE CHART ---------------- */
 function drawChart(high, medium, low) {
+ updateInsights(high, medium, low);
+
   new Chart(document.getElementById("severityChart"), {
     type: "pie",
     data: {
@@ -144,6 +393,63 @@ function drawChart(high, medium, low) {
     }
   });
 }
+function updateInsights(high, medium, low) {
+  const insights = [];
+
+  if (high > 0) {
+    insights.push("🚨 High-risk incidents detected. Immediate action required.");
+  }
+  if (medium >= high) {
+    insights.push("⚠️ Medium-risk incidents are rising. Preventive checks advised.");
+  }
+  if (low > medium && low > high) {
+    insights.push("✅ Majority incidents are low-risk. Safety controls are effective.");
+  }
+
+  insights.push(`📈 Total Incidents: ${high + medium + low}`);
+
+  document.getElementById("insightsList").innerHTML =
+    insights.map(i => `<li>${i}</li>`).join("");
+}
+function startVoiceInput() {
+  if (!('webkitSpeechRecognition' in window)) {
+    alert("Voice input is not supported in this browser. Please use Chrome or Edge.");
+    return;
+  }
+
+  const recognition = new webkitSpeechRecognition();
+  recognition.lang = "en-US";
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
+
+  recognition.start();
+
+  recognition.onstart = () => {
+    document.getElementById("userInput").placeholder = "🎧 Listening...";
+  };
+
+  recognition.onresult = (event) => {
+    const spokenText = event.results[0][0].transcript;
+    const input = document.getElementById("userInput");
+
+    input.value = spokenText;
+    askBot(); // auto-send to chatbot
+  };
+
+  recognition.onerror = () => {
+    alert("Voice recognition failed. Please try again.");
+  };
+
+  recognition.onend = () => {
+    document.getElementById("userInput").placeholder =
+      "Ask about incidents or prevention...";
+  };
+}
+let voiceEnabled = true;
+
+
+
+
 
 /* ---------------- RULE-BASED CHATBOT ---------------- */
 function askBot() {
@@ -155,118 +461,517 @@ function askBot() {
   chat.innerHTML += `<p class="user">You: ${input.value}</p>`;
   input.value = "";
 
-  let answer = "Please ask about incidents, causes, or safety prevention.";
+  let answer = "";
+  let speechText = "";
+  let matched = false;
+
 
   if (question.includes("list") || question.includes("all incidents")) {
+     matched = true;
     answer = "Here are all incidents currently recorded:";
     incidentData.forEach(i => {
       answer += `<br>${i.incidentID || i.id} – ${i.type || "N/A"} (${i.severity || "Low"})`;
     });
+      speechText = "Here are all recorded incidents.";
   }
   else if (question.includes("high")) {
+    matched = true;
     answer = "There are 3 High risk incidents recorded till now.High risk incidents require immediate action: isolate area, stop operations, use PPE, and inform safety officers.";
+    speechText="There are 3 High risk incidents recorded till now.High risk incidents require immediate action: isolate area, stop operations, use PPE, and inform safety officers.";
+  
   }
   else if (question.includes("spill")) {
+    matched= true;
     answer = "Chemical spills should be contained immediately, neutralized if safe, and reported.";
+    speechText="Chemical spills should be contained immediately, neutralized if safe, and reported.";
+  
   }
   else if (question.includes("gas")) {
+    matched=true;
     answer = "Gas leaks require evacuation, ventilation, and emergency response teams.";
+    speechText="Gas leaks require evacuation, ventilation, and emergency response teams.";
   }
   else if(question.includes("what is a chemical spill")){
+    matched=true;
     answer="A chemical spill is the uncontrolled release of hazardous substances (solids, liquids, or gases) into the environment, posing serious risks to health, wildlife, and ecosystems, often from accidents during transport, storage, or handling, requiring immediate emergency response for containment and cleanup.";
+    speechText="A chemical spill is the uncontrolled release of hazardous substances (solids, liquids, or gases) into the environment, posing serious risks to health, wildlife, and ecosystems, often from accidents during transport, storage, or handling, requiring immediate emergency response for containment and cleanup.";
   }
+
   else if(question.includes("what is process deviation")){
+    matched=true;
     answer="A deviation is a non-compliance, a measured difference between an observed value and an expected value, or a change from documented standards examples are-Equipment exceeding temperature limits during processing or storage. Preventive measures for process deviation focus on proactive controls like robust training, clear SOPs, continuous monitoring, and strong change management, alongside reactive steps like thorough Root Cause Analysis (RCA) using tools like Fishbone/5 Whys, implementing Corrective and Preventive Actions (CAPA), and fostering a blame-free culture to stop recurrence, ultimately ensuring process stability and quality.";
+    speechText="A deviation is a non-compliance, a measured difference between an observed value and an expected value, or a change from documented standards examples are-Equipment exceeding temperature limits during processing or storage. Preventive measures for process deviation focus on proactive controls like robust training, clear SOPs, continuous monitoring, and strong change management, alongside reactive steps like thorough Root Cause Analysis (RCA) using tools like Fishbone/5 Whys, implementing Corrective and Preventive Actions (CAPA), and fostering a blame-free culture to stop recurrence, ultimately ensuring process stability and quality.";
   }
   else if(question.includes(" what is near miss")){
+    matched=true;
     answer="In a chemical lab, a near miss is any unplanned event with the potential for injury, damage, or harm but narrowly avoided, like a chemical spill caught before affecting someone, equipment failing just before a problem, or realizing you forgot PPE after exposure but suffered no harm.Proactive prevention: Identifies risks before they cause real harm.";
+    speechText="In a chemical lab, a near miss is any unplanned event with the potential for injury, damage, or harm but narrowly avoided, like a chemical spill caught before affecting someone, equipment failing just before a problem, or realizing you forgot PPE after exposure but suffered no harm.Proactive prevention: Identifies risks before they cause real harm.";
   }
   else if(question.includes("what is equipment failure")){
+    matched=true;
     answer="Equipment failure in a chemical lab means an instrument stops working as intended, ranging from minor underperformance (like a scale being inaccurate) to total breakdown, often caused by age, lack of cleaning/maintenance, operator error (misuse, bad training), material corrosion, or design flaws, leading to lost data, safety hazards, costly downtime, and interrupted research. Proactive Maintenance: Regular cleaning, calibration, and parts replacement.";
+    speechText="Equipment failure in a chemical lab means an instrument stops working as intended, ranging from minor underperformance (like a scale being inaccurate) to total breakdown, often caused by age, lack of cleaning/maintenance, operator error (misuse, bad training), material corrosion, or design flaws, leading to lost data, safety hazards, costly downtime, and interrupted research. Proactive Maintenance: Regular cleaning, calibration, and parts replacement.";
   }
   else if (question.includes("prevent") || question.includes("avoid")) {
+    matched=true;
   answer = "Incidents can be prevented by following SOPs, regular inspections, proper PPE usage, training, and immediate hazard reporting.";
+   speechText="Incidents can be prevented by following SOPs, regular inspections, proper PPE usage, training, and immediate hazard reporting.";
   }
+  else if(question.includes("electrical hazard")){
+    matched=true;
+    answer="An electrical hazard is any dangerous condition involving electricity that can cause injury, death, or damage, such as electric shock, burns, fires, or explosions, often from faulty wiring, wet conditions, overloaded circuits, or contact with live parts, posing risks to anyone working with or near electricity. These hazards happen when people touch energized conductors or equipment, creating a path for current to flow through the body, leading to anything from a tingle to severe burns or cardiac arrest, and can also cause arc flashes, powerful bursts of heat and light.";
+    speechText="An electrical hazard is any dangerous condition involving electricity that can cause injury, death, or damage, such as electric shock, burns, fires, or explosions, often from faulty wiring, wet conditions, overloaded circuits, or contact with live parts, posing risks to anyone working with or near electricity. These hazards happen when people touch energized conductors or equipment, creating a path for current to flow through the body, leading to anything from a tingle to severe burns or cardiac arrest, and can also cause arc flashes, powerful bursts of heat and light.";
+  }
+  else if(question.includes("power room")){
+   matched=true;
+    answer="A power room is best understood as the designated location for these essential electrical controls and backup systems, ensuring the safe and reliable operation of the laboratory.";
+    speechText="A power room is best understood as the designated location for these essential electrical controls and backup systems, ensuring the safe and reliable operation of the laboratory.";
+  }
+  else if (question.includes("explosion risk")) {
+    matched=true;
+  answer = "Explosion risk refers to conditions where flammable gases, vapors, or dust can ignite due to heat, sparks, or pressure buildup, potentially causing severe damage and casualties.";
+   speechText="Explosion risk refers to conditions where flammable gases, vapors, or dust can ignite due to heat, sparks, or pressure buildup, potentially causing severe damage and casualties.";
+  
+}
+
+ else if (question.includes("improper chemical storage")) {
+  matched=true;
+  answer = "Improper chemical storage involves storing incompatible or hazardous chemicals without correct labeling, ventilation, or containment, increasing the risk of leaks, fires, or toxic exposure.";
+  speechText="Improper chemical storage involves storing incompatible or hazardous chemicals without correct labeling, ventilation, or containment, increasing the risk of leaks, fires, or toxic exposure.";
+}
+
+ else if (question.includes("toxic exposure")) {
+  matched=true;
+  answer = "Toxic exposure occurs when harmful chemicals enter the body through inhalation, skin contact, or ingestion, potentially causing acute or long-term health effects.";
+  speechText= "Toxic exposure occurs when harmful chemicals enter the body through inhalation, skin contact, or ingestion, potentially causing acute or long-term health effects.";
+}
+
+ else if (question.includes("pressure vessel failure")) {
+  matched=true;
+  answer = "Pressure vessel failure happens when containers holding pressurized gases or liquids rupture due to overpressure, corrosion, or poor maintenance, leading to explosions or hazardous releases.";
+  speechText="Pressure vessel failure happens when containers holding pressurized gases or liquids rupture due to overpressure, corrosion, or poor maintenance, leading to explosions or hazardous releases.";
+}
+
+ else if (question.includes("ventilation failure")) {
+  matched=true;
+  answer = "Ventilation failure reduces the removal of hazardous fumes or gases, causing buildup of toxic or flammable substances and increasing health and fire risks.";
+  speechText="Ventilation failure reduces the removal of hazardous fumes or gases, causing buildup of toxic or flammable substances and increasing health and fire risks.";
+ 
+}
+
+ else if (question.includes("slippery surface")) {
+  matched=true;
+  answer = "Slippery surfaces are caused by spills, leaks, or poor housekeeping and can lead to slips, falls, and serious workplace injuries.";
+  speechText="Slippery surfaces are caused by spills, leaks, or poor housekeeping and can lead to slips, falls, and serious workplace injuries.";
+}
+
+ else if (question.includes("ppe violation")) {
+  matched=true;
+  answer = "A PPE violation occurs when workers fail to use required protective equipment such as gloves, helmets, or respirators, increasing the risk of injury or chemical exposure.";
+  speechText="A PPE violation occurs when workers fail to use required protective equipment such as gloves, helmets, or respirators, increasing the risk of injury or chemical exposure.";
+ 
+ 
+}
+
+ else if (question.includes("overheating equipment") || question.includes("over heating equipment")) {
+  matched=true;
+  answer = "Overheating equipment can result from overloading, poor maintenance, or ventilation issues and may lead to fires, breakdowns, or explosions.";
+  speechText="Overheating equipment can result from overloading, poor maintenance, or ventilation issues and may lead to fires, breakdowns, or explosions."; 
+}
+
+ else if (question.includes("improper waste disposal")) {
+  matched=true;
+  answer = "Improper waste disposal involves unsafe handling or dumping of chemical waste, which can contaminate the environment and pose serious health hazards.";
+  speechText="Improper waste disposal involves unsafe handling or dumping of chemical waste, which can contaminate the environment and pose serious health hazards.";
+}
+
+ else if (question.includes("radiation exposure")) {
+  matched=true;
+  answer = "Radiation exposure occurs when individuals are subjected to harmful radiation levels, potentially causing burns, organ damage, or long-term health effects.";
+  speechText="Radiation exposure occurs when individuals are subjected to harmful radiation levels, potentially causing burns, organ damage, or long-term health effects.";
+ 
+}
+
+ else if (question.includes("emergency alarm failure")) {
+  matched=true;
+  answer = "Emergency alarm failure means warning systems do not function properly during critical incidents, delaying evacuation and increasing the risk of injuries or fatalities.";
+  speechText="Emergency alarm failure means warning systems do not function properly during critical incidents, delaying evacuation and increasing the risk of injuries or fatalities.";
+  
+}
+
   else if (question.includes("emergency") || question.includes("immediate")) {
+    matched=true;
   answer = "Emergency response includes isolating the area, stopping operations, using PPE, evacuating if needed, and informing safety officers.";
+  speechText="Emergency response includes isolating the area, stopping operations, using PPE, evacuating if needed, and informing safety officers.";
   }
   else if (question.includes("pie") || question.includes("chart")) {
+    matched=true;
   answer = "The pie chart shows the distribution of incidents by severity (High, Medium, Low) to help identify risk concentration areas.";
+  speechText="The pie chart shows the distribution of incidents by severity (High, Medium, Low) to help identify risk concentration areas.";
   }
   else if (question.includes("What are SOP") || question.includes("SOP")){
+    matched=true;
     answer="An SOP (Standard Operating Procedure) in preventive measures is a detailed, step-by-step guide for performing routine tasks (like maintenance or safety checks) to prevent issues";
+    speechText="An SOP (Standard Operating Procedure) in preventive measures is a detailed, step-by-step guide for performing routine tasks (like maintenance or safety checks) to prevent issues";
+  
   }
   else if (question.includes("system") || question.includes("dashboard")) {
+    matched=true;
   answer = "This dashboard monitors chemical safety incidents, analyzes risk levels, and supports decision-making for accident prevention.";
+  speechText="This dashboard monitors chemical safety incidents, analyzes risk levels, and supports decision-making for accident prevention.";
   }
   else if(question.includes("pilot plant")){
+    matched=true;
     answer="A pilot plant is a small, intermediate-scale industrial setup that acts as a bridge between lab research and full-scale manufacturing, used to test, optimize, and validate new processes or products before major investment, gathering crucial data for designing the final, large plant while ensuring safety, quality, and efficiency.";
+    speechText="A pilot plant is a small, intermediate-scale industrial setup that acts as a bridge between lab research and full-scale manufacturing, used to test, optimize, and validate new processes or products before major investment, gathering crucial data for designing the final, large plant while ensuring safety, quality, and efficiency.";
+  
   }
 else if (question.includes("why")) {
+  matched=true;
   answer = "The system uses rule-based intelligence to ensure reliability, transparency, and cost efficiency, which is critical for safety systems.";
+  speechText="The system uses rule-based intelligence to ensure reliability, transparency, and cost efficiency, which is critical for safety systems.";
   }
 else if(question.includes("hi")|| question.includes("hello")){
+  matched=true;
   answer=" Hello, I am a AI chatbot helping out students and faculty personels how to prevent and maintain the list of incidents which occured in chemical laboratory.I can help with incident details, risk levels, prevention methods, locations, and safety analysis. Please ask a related question.";
-  }
+  speechText=" Hello, I am a AI chatbot helping out students and faculty personels how to prevent and maintain the list of incidents which occured in chemical laboratory.I can help with incident details, risk levels, prevention methods, locations, and safety analysis. Please ask a related question.";
+    
+}
   else if (question.includes("causes of process deviation")){
+    matched=true;
     answer="Process deviations stem from human errors, equipment failures, material quality issues, and environmental factors, often linked to inadequate training, poor communication, or unclear SOPs, causing unexpected departures from standard procedures impacting quality, safety, or data integrity in fields like pharma. Causes range from simple mistakes (misreading instructions) to system breakdowns (power outages, sensor malfunctions) or raw material inconsistencies.";
+    speechText="Process deviations stem from human errors, equipment failures, material quality issues, and environmental factors, often linked to inadequate training, poor communication, or unclear SOPs, causing unexpected departures from standard procedures impacting quality, safety, or data integrity in fields like pharma. Causes range from simple mistakes (misreading instructions) to system breakdowns (power outages, sensor malfunctions) or raw material inconsistencies.";
+  
   }
   else if (question.includes("causes of equipment failure")){
+    matched=true;
     answer="Equipment failure stems from common issues like wear & tear, operator error, and insufficient preventive maintenance, but also includes environmental stress, design flaws, improper installation, contamination, and electrical problems, all accelerated by aging equipment, poor quality parts, or a weak reliability culture. Addressing these causes involves proper training, regular monitoring, and a balance of maintenance, rather than too much or too little.";
+    speechText="Equipment failure stems from common issues like wear & tear, operator error, and insufficient preventive maintenance, but also includes environmental stress, design flaws, improper installation, contamination, and electrical problems, all accelerated by aging equipment, poor quality parts, or a weak reliability culture. Addressing these causes involves proper training, regular monitoring, and a balance of maintenance, rather than too much or too little.";
+  
+  }
+  else if(question.includes("chemical laboratory")){
+    matched=true;
+    answer="A chemical laboratory is a specialized space (room or building) where scientists, researchers, and students perform experiments, analyses, and practical work related to chemistry, studying substances, their properties, and reactions using specific equipment, tools, and safety protocols to bridge theory with real-world applications, develop new products, or ensure quality. These labs vary from educational settings to industrial research and quality control, focusing on tasks like chemical testing, developing formulations, or exploring new chemical processes.";
+    speechText="A chemical laboratory is a specialized space (room or building) where scientists, researchers, and students perform experiments, analyses, and practical work related to chemistry, studying substances, their properties, and reactions using specific equipment, tools, and safety protocols to bridge theory with real-world applications, develop new products, or ensure quality. These labs vary from educational settings to industrial research and quality control, focusing on tasks like chemical testing, developing formulations, or exploring new chemical processes.";
+  
   }
   else if (question.includes("causes of electrical hazard")){
+    matched=true;
     answer="Electrical hazards stem from faulty wiring/equipment, overloaded circuits, water exposure, damaged insulation, and improper grounding, often worsened by human factors like lack of training, DIY repairs, or bypassing safety measures, leading to shocks, burns, or fires. Key causes include damaged cords, wet conditions, improper grounding, overloaded outlets, and working live without training, all increasing risk significantly.";
+    speechText="Electrical hazards stem from faulty wiring/equipment, overloaded circuits, water exposure, damaged insulation, and improper grounding, often worsened by human factors like lack of training, DIY repairs, or bypassing safety measures, leading to shocks, burns, or fires. Key causes include damaged cords, wet conditions, improper grounding, overloaded outlets, and working live without training, all increasing risk significantly.";
+  
   }
   else if (question.includes("causes")){
+    matched=true;
     answer="Chemical hazards in labs stem from improper handling, poor storage, lack of training, inadequate engineering controls (like ventilation), incorrect PPE use, and the inherent properties of chemicals (flammability, corrosivity, toxicity), leading to exposures via inhalation, skin absorption, ingestion, or injection, causing burns, fires, poisoning, and long-term illnesses like cancer or organ damage.";
+    speechText="Chemical hazards in labs stem from improper handling, poor storage, lack of training, inadequate engineering controls (like ventilation), incorrect PPE use, and the inherent properties of chemicals (flammability, corrosivity, toxicity), leading to exposures via inhalation, skin absorption, ingestion, or injection, causing burns, fires, poisoning, and long-term illnesses like cancer or organ damage.";
+  
   }
   else if (question.includes("incidents")){
+    matched=true;
     answer="there are total 10 incidents recorded till now";
+    speechText="there are total 10 incidents recorded till now";
+  }
+  else if(question.includes("safety") || question.includes("precautions")){
+    matched=true;
+    answer="Chemical lab safety involves wearing proper PPE (goggles, lab coat, closed-toe shoes, gloves), avoiding food/drink, securing hair/loose clothing, knowing emergency equipment, proper chemical handling (fume hoods, labeling, no tasting/smelling), and careful disposal, all to prevent exposure and accidents.";
+    speechText="Chemical lab safety involves wearing proper PPE (goggles, lab coat, closed-toe shoes, gloves), avoiding food/drink, securing hair/loose clothing, knowing emergency equipment, proper chemical handling (fume hoods, labeling, no tasting/smelling), and careful disposal, all to prevent exposure and accidents.";
+  
+
+  }
+  else if(question.includes("fire hazard")){
+    matched=true;
+    answer="A fire hazard is anything that can ignite or fuel a fire, increasing the risk of a fire starting, spreading, or becoming more severe, including faulty wiring, flammable materials (like chemicals, paper, wood), human error (unattended candles, smoking), poor housekeeping, or even malfunctioning fire safety equipment that blocks escape routes. Essentially, it's a source or condition that presents a threat of fire to people or property, requiring management to prevent devastating incidents.";
+    speechText="A fire hazard is anything that can ignite or fuel a fire, increasing the risk of a fire starting, spreading, or becoming more severe, including faulty wiring, flammable materials (like chemicals, paper, wood), human error (unattended candles, smoking), poor housekeeping, or even malfunctioning fire safety equipment that blocks escape routes. Essentially, it's a source or condition that presents a threat of fire to people or property, requiring management to prevent devastating incidents.";
   }
 
   else if (question.includes("prevent")) {
+    matched=true;
     answer = "Prevention includes SOPs, training, PPE, regular inspections, and hazard reporting.";
+    speechText="Prevention includes SOPs, training, PPE, regular inspections, and hazard reporting.";
   }
   else if (question.includes("how many") && question.includes("incident")) {
+    matched=true;
   answer = `There are ${incidentData.length} incidents recorded in the system.`;
+  speechText=`There are ${incidentData.length} incidents recorded in the system.`;
   }
   else if (question.includes("near miss")){
-    answer="In a chemical lab, a near miss incident (or close call) is any unplanned event that almost caused harm, injury, property damage, or environmental release but didn't, due to luck or quick action; it's a crucial safety warning for underlying hazards like faulty equipment, procedural errors, or improper handling, allowing labs to fix issues before a real accident happens, like a technician nearly dropping a chemical but catching it.";
+    matched=true;
+    answer= "In a chemical lab, a near miss incident (or close call) is any unplanned event that almost caused harm, injury, property damage, or environmental release but didn't, due to luck or quick action; it's a crucial safety warning for underlying hazards like faulty equipment, procedural errors, or improper handling, allowing labs to fix issues before a real accident happens, like a technician nearly dropping a chemical but catching it.";
+    speechText="In a chemical lab, a near miss incident (or close call) is any unplanned event that almost caused harm, injury, property damage, or environmental release but didn't, due to luck or quick action; it's a crucial safety warning for underlying hazards like faulty equipment, procedural errors, or improper handling, allowing labs to fix issues before a real accident happens, like a technician nearly dropping a chemical but catching it.";
 
   }
 else if (question.includes("how many high")) {
+  matched=true;
   const count = incidentData.filter(i => i.severity === "High").length;
   answer = `There are ${count} high-risk incidents.`;
+  speechText=`There are ${count} high-risk incidents.`;
 }
 else if (question.includes("mechanical section")){
+  matched=true;
   answer= "mechanical section typically refers to the Mechanical Operations Laboratory or an area dedicated to mechanical testing of materials, which involve physical changes and processes fundamental to chemical and materials engineering.";
+  speechText="mechanical section typically refers to the Mechanical Operations Laboratory or an area dedicated to mechanical testing of materials, which involve physical changes and processes fundamental to chemical and materials engineering.";
+
 }
 else if (question.includes("medium")) {
+  matched=true;
   const count = incidentData.filter(i => i.severity === "Medium").length;
   answer = `There are ${count} medium-risk incidents.`;
+  speechText=`There are ${count} medium-risk incidents.`;
 }
 
 else if (question.includes("low")) {
+  matched=true;
   const count = incidentData.filter(i => i.severity === "Low").length;
   answer = `There are ${count} low-risk incidents.`;
+  speechText=`There are ${count} low-risk incidents.`;
 }
 
 
 
   else if (question.includes("inc")) {
+    matched=true;
     const found = incidentData.find(i => question.includes((i.incidentID || i.id).toLowerCase()));
     if (found) {
       answer = `${found.incidentID || found.id}: ${found.type || "N/A"} at ${found.location || "N/A"} with ${found.severity || "Low"} severity.`;
+      speechText=`${found.incidentID || found.id}: ${found.type || "N/A"} at ${found.location || "N/A"} with ${found.severity || "Low"} severity.`;
     }
   }
+  // Fallback: If no rule matched
+if (!matched) {
+  const query = encodeURIComponent(question);
+  answer = `
+    I couldn't find a direct answer for this query.<br><br>
+    🔎 You can explore trusted resources below:<br>
+    <a href="https://www.google.com/search?q=${query}" target="_blank">Search on Google</a><br>
+    <a href="https://www.youtube.com/results?search_query=${query}" target="_blank">Search on YouTube</a>
+  `;
+    speechText = "I couldn't find a direct answer for this question. Please use Google or YouTube links provided to explore further.";
+
+ }
+ 
+
 
   chat.innerHTML += `<p class="ai"><b>AI:</b> ${answer}</p>`;
   chat.scrollTop = chat.scrollHeight;
+  speakText(speechText);
 }
+function speakText(text) {
+  if (!voiceEnabled) return;
+  if (!("speechSynthesis" in window)) return;
+
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = "en-US";
+  utterance.rate = 1;
+  utterance.pitch = 1;
+
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(utterance);
+}
+
+function toggleVoice() {
+  voiceEnabled = !voiceEnabled;
+
+  const btn = document.getElementById("voiceToggle");
+  btn.innerText = voiceEnabled ? "🔊 Voice: ON" : "🔇 Voice: OFF";
+
+  if (!voiceEnabled) {
+    window.speechSynthesis.cancel(); // stop speaking immediately
+  }
+}
+function clearChat() {
+  const confirmClear = confirm("Are you sure you want to clear all chat messages?");
+  if (!confirmClear) return;
+
+  const chat = document.getElementById("chatLog");
+
+  chat.innerHTML = `
+    <p class="ai"><b>AI:</b> Hello! Ask me about incidents, causes, or prevention.</p>
+  `;
+
+  // Stop any ongoing voice
+  if ("speechSynthesis" in window) {
+    window.speechSynthesis.cancel();
+  }
+}
+function toggleDarkMode() {
+  document.body.classList.toggle("dark");
+
+  const btn = document.getElementById("darkModeBtn");
+  if (document.body.classList.contains("dark")) {
+    btn.innerText = "☀️ Light Mode";
+  } else {
+    btn.innerText = "🌙 Dark Mode";
+  }
+}
+function searchGoogle() {
+  const q = document.getElementById("externalQuery").value;
+  if (!q) return;
+  window.open(`https://www.google.com/search?q=${encodeURIComponent(q)}`, "_blank");
+}
+
+function searchYouTube() {
+  const q = document.getElementById("externalQuery").value;
+  if (!q) return;
+  window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(q)}`, "_blank");
+}
+
+function openGemini() {
+  const q = document.getElementById("externalQuery").value;
+  if (!q) return;
+  window.open(`https://gemini.google.com/app?q=${encodeURIComponent(q)}`, "_blank");
+}
+
+
+
+
+
+
+function analyzeIncident() {
+  const file = document.getElementById("mediaUpload").files[0];
+  const type = document.getElementById("incidentType").value;
+
+  if (!file || !type) {
+    alert("Please upload evidence and select incident type");
+    return;
+  }
+
+  const incidentResponses = {
+    chemical_spill: {
+      risk: "High",
+      action: "Isolate area and use spill control kit",
+      prevention: "Proper chemical storage and training"
+    },
+    gas_leakage: {
+      risk: "Critical",
+      action: "Evacuate immediately and shut gas supply",
+      prevention: "Install gas detectors and regular audits"
+    },
+    fire_hazard: {
+      risk: "Critical",
+      action: "Use fire extinguisher and alert emergency services",
+      prevention: "Fire drills and equipment maintenance"
+    },
+    electrical_fault: {
+      risk: "Medium",
+      action: "Disconnect power and isolate area",
+      prevention: "Regular electrical safety audits"
+    },
+    reaction_runaway: {
+      risk: "Critical",
+      action: "Initiate emergency shutdown and cooling",
+      prevention: "Strict reaction monitoring and control systems"
+    },
+    pressure_failure: {
+  risk: "Critical",
+  action: "Evacuate the area immediately and isolate the pressure source if safe to do so",
+  prevention: "Conduct regular pressure testing, install relief valves, and follow certified operating limits"
+    },
+
+    toxic_exposure: {
+      risk: "High",
+      action: "Move victim to fresh air and use PPE",
+      prevention: "Proper ventilation and safety training"
+    },
+    corrosive_leak: {
+  risk: "High",
+  action: "Evacuate the area immediately and neutralize the spill using approved materials",
+  prevention: "Use corrosion-resistant containers and conduct regular leak inspections"
+},
+
+overheating_equipment: {
+  risk: "Medium",
+  action: "Shut down equipment and allow it to cool before inspection",
+  prevention: "Ensure proper maintenance, cooling systems, and temperature monitoring"
+},
+
+radiation: {
+  risk: "Critical",
+  action: "Evacuate the affected area and restrict access immediately",
+  prevention: "Use shielding, radiation monitoring devices, and strict safety protocols"
+},
+
+waste_disposal: {
+  risk: "Medium",
+  action: "Isolate the waste and report it to the safety officer for proper handling",
+  prevention: "Follow hazardous waste disposal guidelines and staff training"
+},
+
+ventilation_failure: {
+  risk: "High",
+  action: "Stop ongoing operations and evacuate personnel to fresh air zones",
+  prevention: "Maintain ventilation systems and install air-quality monitoring sensors"
+},
+
+slip_hazard: {
+  risk: "Low",
+  action: "Restrict access and clean the affected area immediately",
+  prevention: "Use anti-slip flooring and display warning signage"
+},
+
+alarm_failure: {
+  risk: "High",
+  action: "Notify personnel manually and activate emergency protocols",
+  prevention: "Perform regular alarm testing and system redundancy checks"
+},
+
+    explosion_risk: {
+      risk: "Critical",
+      action: "Evacuate area and inform emergency team",
+      prevention: "Pressure relief systems and inspections"
+    }
+  };
+
+  const response = incidentResponses[type] || {
+    risk: "Low",
+    action: "Monitor the situation",
+    prevention: "Follow standard safety procedures"
+  };
+
+  document.getElementById("aiResponse").innerHTML = `
+    <b>Risk Level:</b> ${response.risk}<br>
+    <b>Immediate Action:</b> ${response.action}<br>
+    <b>Prevention:</b> ${response.prevention}
+  `;
+}
+
+
+
+
+
 </script>
+<hr>
+
+<div style="margin-top:30px; padding:15px; background:#f9f9f9;color: #666; text-align:center;">
+  <h3>📘 Trusted Safety Guidelines</h3>
+  <p>Access official government authorities for chemical safety standards and best practices.</p>
+
+  <a href="https://www.osha.gov" target="_blank" style="margin:0 15px;">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/7/73/US-OSHA-Logo.svg"
+         alt="OSHA" height="50">
+  </a>
+
+  <a href="https://www.epa.gov" target="_blank" style="margin:0 15px;">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Seal_of_the_United_States_Environmental_Protection_Agency.svg"
+         alt="EPA" height="50">
+  </a>
+
+  <a href="https://www.cdc.gov/niosh" target="_blank" style="margin:0 15px;">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/4/4d/CDC_logo.svg"
+         alt="NIOSH" height="50">
+  </a>
+
+  <p style="font-size:12px; color:#666; margin-top:10px;">
+    Links redirect to official government safety portals.
+  </p>
+</div>
+
+
+
 
 </body>
 </html>
+
 
 
 
